@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-from community.models import Question
-from .Forms import QuestionForm
+from community.models import *
+from .Forms import QuestionForm, CommentForm
 
 # Create your views here.
 
@@ -11,7 +11,8 @@ def list(request):
 
 def detail(request, pk):
     post = get_object_or_404(Question, pk=pk)
-    return render(request, 'detail.html', {'post':post})
+    post_hashtag=post.hashtag.all()
+    return render(request, 'detail.html', {'post':post, 'hashtags':post_hashtag})
 
 def new(request):
     form=QuestionForm()
@@ -23,6 +24,11 @@ def create(request):
         new_question=form.save(commit=False)
         new_question.upload_time=timezone.now()
         new_question.save()
+        hashtags=request.POST['hashtags']
+        hashtag=hashtags.split(", ")
+        for tag in hashtag:
+            new_hashtag=HashTag.objects.get_or_create(hashtag=tag)
+            new_question.hashtag.add(new_hashtag[0])
         return redirect('detail', new_question.id)
     return redirect('list')
 
@@ -53,3 +59,20 @@ def update(request, pk):
         return redirect('list')
     else:
         return render(request, 'update.html', {'post': question_update})
+    
+def add_comment(request, pk):
+    community=get_object_or_404(Question, pk=pk)
+
+    if request.method=='POST':
+        form=CommnetForm(request.POST)
+
+        if form.is_valid():
+            comment=form.save(commit=False)
+            comment.post=community
+            comment.save()
+            return redirect ('detail', pk)
+        
+    else:
+        form=CommnetForm()
+
+    return render(request, 'add_comment.html', {'form':form})
