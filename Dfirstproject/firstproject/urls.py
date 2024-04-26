@@ -30,4 +30,5 @@ urlpatterns = [
     path('delete/<int:pk>', community.views.delete, name="delete"),
     path('update/<int:pk>', community.views.update, name="update"),
     path('<int:pk>/comment', community.views.add_comment, name="add_comment"),
+    path('<int:pk>/like', community.views.like_post, name="like_post"),
 ]

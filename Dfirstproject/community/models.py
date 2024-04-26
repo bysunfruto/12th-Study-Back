@@ -13,6 +13,7 @@ class Question(models.Model):
     upload_time = models.DateTimeField('date published')
     content = models.TextField('Content')
     hashtag=models.ManyToManyField(HashTag)
+    likes_count=models.IntegerField(default=0)
 
     def __str__(self):
         return self.title
@@ -31,3 +32,11 @@ class Comment(models.Model):
     
     def __str__(self) -> str:
         return self.comment_text
+    
+class Like(models.Model):
+    post=models.ForeignKey(Question, related_name='likes', on_delete=models.CASCADE)
+    username=models.CharField(max_length=20) # 좋아요한 유저명 저장
+    created_at=models.DateTimeField(default=timezone.now)
+
+    def approve(self):
+        self.save()

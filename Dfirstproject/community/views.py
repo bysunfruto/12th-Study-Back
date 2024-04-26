@@ -64,7 +64,7 @@ def add_comment(request, pk):
     community=get_object_or_404(Question, pk=pk)
 
     if request.method=='POST':
-        form=CommnetForm(request.POST)
+        form=CommentForm(request.POST)
 
         if form.is_valid():
             comment=form.save(commit=False)
@@ -73,6 +73,30 @@ def add_comment(request, pk):
             return redirect ('detail', pk)
         
     else:
-        form=CommnetForm()
+        form=CommentForm()
 
     return render(request, 'add_comment.html', {'form':form})
+
+def like_post(request, pk):
+    # 게시물 가져오기
+    try:
+        post = Question.objects.get(pk=pk)
+    except Question.DoesNotExist:
+        raise Http404("게시물을 찾을 수 없습니다.")
+
+    # 이미 좋아요를 눌렀는지 확인
+    already_liked = Like.objects.filter(post=post, username=request.user.username).exists()
+
+    if already_liked:
+        # 이미 좋아요를 누른 상태이면 좋아요 취소
+        Like.objects.filter(post=post, username=request.user.username).delete()
+        post.likes_count -= 1
+        post.save()
+    else:
+        # 좋아요 추가
+        Like.objects.create(post=post, username=request.user.username)
+        post.likes_count += 1
+        post.save()
+
+    # 상세 페이지로 리다이렉트
+    return redirect('detail', pk=pk)
