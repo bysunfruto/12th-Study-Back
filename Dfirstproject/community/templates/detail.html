@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post.title }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f5ff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #007bff;
+        }
+
+        span {
+            color: #555555;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+
+        .content {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .button,
+        .like-button button,
+        .add_comment {
+            padding: 10px 20px; /* 버튼의 기본 패딩 값 */
+            color: #ffffff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            display: inline-block;
+            margin-top: 10px; /* 버튼 간의 간격 조절 */
+        }
+
+        .button:hover,
+        .like-button button:hover,
+        .add_comment:hover {
+            background-color: #0056b3;
+        }
+
+        .likes {
+            color: #555555;
+            font-size: 0.8em;
+            margin-top: 10px;
+        }
+
+        .like-button {
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .comment {
+            margin-top: 20px;
+        }
+
+        .username {
+            font-weight: bold;
+        }
+
+        .date {
+            color: #555555;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ post.title }}</h1>
+        <span>{{ post.upload_time }}</span>
+        <div class="content">{{ post.content }}</div>
+        <div>
+            {% for hashtag in post.hashtag.all %}
+            #{{ hashtag }}
+            {% endfor %}
+        </div>
+        <div class="likes">
+            좋아요: {{ post.likes_count }}
+        </div>
+        <div class="like-button">
+            <form action="{% url 'like_post' post.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="button">좋아요</button>
+            </form>
+        </div>
+        <a href="{% url 'list' %}" class="button">홈으로 돌아가기</a>
+        <a href="{% url 'delete' post.id %}" class="button">삭제하기</a>
+        <a href="{% url 'update' post.id %}" class="button">수정하기</a>
+    </div>
+    <br>
+    <hr>
+    <a class="add_comment button" href="{% url 'add_comment' post.id %}">댓글달기</a>
+    {% for comment in post.comments.all %}
+        <div class="comment">
+            <strong class="username">{{comment.username}}</strong>
+            <div class="date">{{comment.created_at }}</div>
+            <p>{{comment.comment_text | linebreaks }}</p>
+        </div>
+    {% empty %}
+        <p>아직 댓글이 없어요</p>
+    {% endfor %}
+</body>
+</html>
