@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 
+
 # Create your models here.
 class HashTag(models.Model):
     hashtag=models.CharField(max_length=100)

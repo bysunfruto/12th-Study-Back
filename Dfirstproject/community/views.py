@@ -3,6 +3,7 @@ from django.utils import timezone
 from community.models import *
 from .Forms import QuestionForm, CommentForm
 
+
 # Create your views here.
 
 def list(request):
