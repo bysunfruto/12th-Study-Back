@@ -4,7 +4,7 @@
         <a href="{% url 'new' %}">새로운 글 만들기</a>
 
         <ul>
-            {% for question in questions %}
+            {% for question in questions.all %}
             <li><a href="{% url 'detail' pk=question.id %}">{{question.title}} </a>
                 <span>{{question.upload_time}}</span></li>
             {% endfor %}

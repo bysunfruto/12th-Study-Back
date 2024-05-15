@@ -1,25 +1,57 @@
 <body>
     <div>
-        <h1>{{ question.title }} </h1>
+        <h1>{{ question.title }}</h1>
         <br>
-        <span>{{ question.uplaod_time }} </span>
-        <div class = "content">{{ question.content }} </div>
+        <span>{{ question.uplaod_time }}</span>
+        <div class="content">{{ question.content }}</div>
         <a href="{% url 'delete' question.id %}">삭제하기</a>
         <a href="{% url 'update' question.id %}">수정하기</a>
         <a href="{% url 'main' %}">홈으로 돌아가기</a>
     </div>
-</body>
 
-<br>
-<hr>
-<a class="add_comment" href="{% url 'add_comment' question.id %}">댓글달기</a>
-{% for comment in post.comments.all %}
+    <br>
+    <hr>
+    <a class="add_comment" href="{% url 'add_comment' question.id %}">댓글달기</a>
+    {% for comment in question.comments.all %}
     <div class="comment">
         <strong class="username">{{comment.username}}</strong>
         <div class="date">{{comment.created_at }}</div>
         <p>{{comment.comment_text | linebreaks }}</p>
     </div>
 
-{% empty %}
+    {% empty %}
     <p>아직 댓글이 없어요</p>
-{% endfor %}
+    {% endfor %}
+</body>
+
+<!-- 좋아요 관련 코드 추가 -->
+<!-- 좋아요 버튼 -->
+<p class="post-meta" id="like-button" data-question-id="{{ question.id }}" onclick="likeToggle(this)">
+    {% if request.user in question.like.all %}
+        ♥ {{ question.like.count }}
+    {% else %}
+        ♡ {{ question.like.count }}
+    {% endif %}
+</p>
+
+<script>
+    function likeToggle(likeButton) {
+        var questionId = likeButton.getAttribute('data-question-id');
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = function() {
+            if (httpRequest.readyState == XMLHttpRequest.DONE && httpRequest.status == 200 ) {
+                var response = JSON.parse(httpRequest.responseText);
+                var likeCount = response.like_cnt;
+                if (response.message == 'added') {
+                    likeButton.innerHTML = '♥ ' + likeCount;
+                } else if (response.message == 'deleted') {
+                    likeButton.innerHTML = '♡ ' + likeCount;
+                }
+            }
+        };
+        httpRequest.open("GET", "/like/" + questionId, true);
+        httpRequest.send();
+    }
+</script>
+
+

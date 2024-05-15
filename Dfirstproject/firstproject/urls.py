@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from community.views import List, detail, new, create, delete, update, update_page, add_comment
+from community.views import List, detail, new, create, delete, update, update_page, add_comment, like, login_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -12,4 +12,7 @@ urlpatterns = [
     path('update_page/<int:question_id>',update_page, name="update_page"),
     path('update/<int:question_id>',update,name="update"),
     path('<int:question_id>/comment',add_comment,name="add_comment"),
+    path('like/<int:bid>', like, name="like"),
+    path('accounts/login/', login_view, name='login'),
+
 ]
