@@ -22,16 +22,50 @@
         }
 
         h1 {
-            color: #007bff;
+            font-size: 2em;
+            color: #ff5733; /* 강조 색상 */
+            text-align: center;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
         }
 
-        a {
-            color: #007bff;
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px 0;
+            background-color: #007bff;
+            color: #ffffff;
             text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+            transition: background-color 0.2s;
         }
 
-        a:hover {
-            text-decoration: underline;
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .small-button {
+            padding: 8px 16px;
+            font-size: 0.9em;
+        }
+
+        .auth-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .auth-info {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #e8f0fe;
+            border: 1px solid #c5d9ff;
+            border-radius: 5px;
+            line-height: 1.6;
+        }
+
+        .auth-info p {
+            margin: 5px 0;
         }
 
         ul {
@@ -48,18 +82,41 @@
             font-size: 0.8em;
             margin-left: 10px;
         }
+
     </style>
 </head>
 <body>
+
+    <div class="auth-buttons">
+        {% if not user.is_authenticated %}
+        <a href="{% url 'login' %}" class="button small-button">로그인하기</a>
+        <a href="{% url 'signup' %}" class="button small-button">회원가입하기</a>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}" class="button small-button">로그아웃하기</a>
+        {% endif %}
+    </div>
+
+    {% if user.is_authenticated %}
+    <div class="auth-info">
+        <p><strong>닉네임:</strong> {{ user.nickname }} <strong>대학:</strong> {{ user.university }} 
+            <strong>위치:</strong> {{ user.location }} <strong>관심사:</strong> {{ user.interest }} </p>
+    </div>
+    {% endif %}
+
     <div class="content">
         <h1>🦁질문하십시오</h1>
-        <a href="{% url 'new' %}">새로운 질문하기</a>
+        <a href="{% url 'new' %}" class="button">새로운 질문하기</a>
         <ul>
             {% for post in posts %}
-                <li><a href="{% url 'detail' pk=post.id %}">{{post.title}}</a></li>
-                <span>{{post.upload_time}}</span>
+                <li>
+                    <a href="{% url 'detail' pk=post.id %}">{{post.title}}</a>
+                    <span>{{post.upload_time}}</span>
+                </li>
             {% endfor %}
         </ul>
     </div>
+
 </body>
 </html>

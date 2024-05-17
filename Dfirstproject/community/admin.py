@@ -1,5 +1,5 @@
 from django.contrib import admin
-from community.models import Question, Comment, HashTag, Like
+from community.models import *
 
 # Register your models here.
 
