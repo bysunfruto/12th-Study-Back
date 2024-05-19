@@ -154,6 +154,11 @@
         <div class="meta-info">
             <span>{{ post.upload_time }}</span>
         </div>
+        <br>
+        {% if post.photo %}
+        <img src="{{ post.photo.url }}" alt="" height="300px;">
+        {% endif %}
+        <br>
         <div class="content">{{ post.content }}</div>
         <div class="hashtag-container">
             {% for hashtag in post.hashtag.all %}

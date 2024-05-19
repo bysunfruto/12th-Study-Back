@@ -1,0 +1,10 @@
+{% extends 'list.html' %}
+
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/text.css' %}">
+<title>Home</title>
+{% endblock %}
+
+{% block content %}

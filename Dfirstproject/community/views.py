@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from community.models import *
-from .Forms import QuestionForm, CommentForm
+from .forms import QuestionForm, CommentForm
 
 
 # Create your views here.

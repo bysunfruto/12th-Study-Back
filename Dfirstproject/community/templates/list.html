@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>질문글</title>
+    <title>질문</title>
     <style>
         body {
             font-family: 'Nanum Gothic', sans-serif;
@@ -133,13 +133,13 @@
     {% if user.is_authenticated %}
     <div class="auth-info">
         <p><strong>닉네임:</strong> {{ user.nickname }} <strong>대학:</strong> {{ user.university }} 
-            <strong>위치:</strong> {{ user.location }} <strong>관심사:</strong> {{ user.interest }} </p>
+            <strong>위치:</strong> {{ user.location }} <strong>취미:</strong> {{ user.interest }} </p>
     </div>
     {% endif %}
 
     <div class="container">
         <h1>무엇이든 물어보살</h1>
-        <a href="{% url 'new' %}" class="button">새로운 질문하기</a>
+        <a href="{% url 'new' %}" class="button">질문하기</a>
         <ul>
             {% for post in posts %}
                 <li>
@@ -149,6 +149,10 @@
             {% endfor %}
         </ul>
     </div>
-
+{% load static %}
+{% block head %}
+<link rel=""stylesheet" href="{% static 'css/text.css' %}">
+<link rel=""stylesheet" href="{% static 'css/text2.css' %}">
+{% endblock %}
 </body>
 </html>
