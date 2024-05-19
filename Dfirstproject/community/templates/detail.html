@@ -6,63 +6,101 @@
     <title>{{ post.title }}</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f5ff;
+            font-family: 'Nanum Gothic', sans-serif;
+            background-color: #f8f8f8;
             margin: 0;
             padding: 0;
         }
 
         .container {
-            max-width: 800px;
-            margin: 20px auto;
+            max-width: 900px;
+            margin: 30px auto;
             padding: 20px;
             background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
-            color: #007bff;
+            color: #2db400;
+            font-size: 2em;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #2db400;
+            padding-bottom: 10px;
         }
 
-        span {
-            color: #555555;
-            font-size: 0.8em;
-            margin-left: 10px;
+        .meta-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e5e5e5;
+            padding-bottom: 10px;
+        }
+
+        .meta-info span {
+            color: #999999;
+            font-size: 0.9em;
         }
 
         .content {
+            line-height: 1.8;
             margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ddd;
+            padding: 20px;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            background-color: #fefefe;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .hashtag-container {
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 1px solid #e5e5e5;
+        }
+
+        .hashtag {
+            display: inline-block;
+            color: #2db400;
+            margin-right: 10px;
+            font-size: 0.9em;
+            background-color: #f0fff0;
+            padding: 5px 10px;
             border-radius: 5px;
-            background-color: #f9f9f9;
+        }
+
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
         }
 
         .button,
         .like-button button,
         .add_comment {
-            padding: 10px 20px; /* 버튼의 기본 패딩 값 */
+            padding: 10px 20px;
             color: #ffffff;
-            background-color: #007bff;
+            background-color: #2db400;
             border: none;
             border-radius: 5px;
             text-decoration: none;
             cursor: pointer;
             display: inline-block;
-            margin-top: 10px; /* 버튼 간의 간격 조절 */
+            font-size: 0.9em;
+            transition: background-color 0.3s;
         }
 
         .button:hover,
         .like-button button:hover,
         .add_comment:hover {
-            background-color: #0056b3;
+            background-color: #28a600;
         }
 
         .likes {
             color: #555555;
-            font-size: 0.8em;
-            margin-top: 10px;
+            font-size: 0.9em;
+            margin-top: 20px;
         }
 
         .like-button {
@@ -70,28 +108,56 @@
             margin-top: 10px;
         }
 
+        .comments-section {
+            margin-top: 30px;
+        }
+
         .comment {
-            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #e5e5e5;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            margin-top: 10px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
         .username {
             font-weight: bold;
+            color: #333333;
+            margin-right: 10px;
         }
 
         .date {
-            color: #555555;
-            font-size: 0.8em;
+            color: #999999;
+            font-size: 0.9em;
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid #e5e5e5;
+            margin: 30px 0;
+        }
+
+        .no-comments {
+            color: #999999;
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #e5e5e5;
+            border-radius: 5px;
+            background-color: #f9f9f9;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>{{ post.title }}</h1>
-        <span>{{ post.upload_time }}</span>
+        <div class="meta-info">
+            <span>{{ post.upload_time }}</span>
+        </div>
         <div class="content">{{ post.content }}</div>
-        <div>
+        <div class="hashtag-container">
             {% for hashtag in post.hashtag.all %}
-            #{{ hashtag }}
+            <span class="hashtag">#{{ hashtag }}</span>
             {% endfor %}
         </div>
         <div class="likes">
@@ -103,21 +169,24 @@
                 <button type="submit" class="button">좋아요</button>
             </form>
         </div>
-        <a href="{% url 'list' %}" class="button">홈으로 돌아가기</a>
-        <a href="{% url 'delete' post.id %}" class="button">삭제하기</a>
-        <a href="{% url 'update' post.id %}" class="button">수정하기</a>
-    </div>
-    <br>
-    <hr>
-    <a class="add_comment button" href="{% url 'add_comment' post.id %}">댓글달기</a>
-    {% for comment in post.comments.all %}
-        <div class="comment">
-            <strong class="username">{{comment.username}}</strong>
-            <div class="date">{{comment.created_at }}</div>
-            <p>{{comment.comment_text | linebreaks }}</p>
+        <div class="buttons">
+            <a href="{% url 'list' %}" class="button">홈으로 돌아가기</a>
+            <a href="{% url 'delete' post.id %}" class="button">삭제하기</a>
+            <a href="{% url 'update' post.id %}" class="button">수정하기</a>
         </div>
-    {% empty %}
-        <p>아직 댓글이 없어요</p>
-    {% endfor %}
+    </div>
+    <hr>
+    <div class="comments-section">
+        <a class="add_comment button" href="{% url 'add_comment' post.id %}">댓글달기</a>
+        {% for comment in post.comments.all %}
+            <div class="comment">
+                <strong class="username">{{ comment.username }}</strong>
+                <span class="date">{{ comment.created_at }}</span>
+                <p>{{ comment.comment_text | linebreaks }}</p>
+            </div>
+        {% empty %}
+            <div class="no-comments">아직 댓글이 없어요</div>
+        {% endfor %}
+    </div>
 </body>
 </html>

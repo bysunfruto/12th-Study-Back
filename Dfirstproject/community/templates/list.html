@@ -6,42 +6,51 @@
     <title>질문글</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f5ff;
+            font-family: 'Nanum Gothic', sans-serif;
+            background-color: #f8f8f8;
             margin: 0;
             padding: 0;
         }
 
-        .content {
-            max-width: 800px;
-            margin: 0 auto;
+        .header {
+            background-color: #2db400;
+            padding: 10px 0;
+            text-align: center;
+            color: white;
+            font-size: 1.5em;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
             padding: 20px;
             background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
             font-size: 2em;
-            color: #ff5733; /* 강조 색상 */
+            color: #2db400;
             text-align: center;
-            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
         }
 
         .button {
             display: inline-block;
             padding: 10px 20px;
             margin: 5px 0;
-            background-color: #007bff;
+            background-color: #2db400;
             color: #ffffff;
             text-decoration: none;
             border-radius: 5px;
             text-align: center;
-            transition: background-color 0.2s;
+            transition: background-color 0.3s;
         }
 
         .button:hover {
-            background-color: #0056b3;
+            background-color: #28a600;
         }
 
         .small-button {
@@ -51,14 +60,14 @@
 
         .auth-buttons {
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
+            justify-content: flex-end;
+            margin: 20px 0;
         }
 
         .auth-info {
-            margin: 10px 0;
-            padding: 10px;
-            background-color: #e8f0fe;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f0f8e8;
             border: 1px solid #c5d9ff;
             border-radius: 5px;
             line-height: 1.6;
@@ -74,7 +83,26 @@
         }
 
         li {
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #e5e5e5;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        li:hover {
+            background-color: #f1f1f1;
+        }
+
+        a {
+            color: #2db400;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
         }
 
         span {
@@ -86,6 +114,10 @@
     </style>
 </head>
 <body>
+
+    <div class="header">
+        무엇이든 물어보세요
+    </div>
 
     <div class="auth-buttons">
         {% if not user.is_authenticated %}
@@ -105,14 +137,14 @@
     </div>
     {% endif %}
 
-    <div class="content">
-        <h1>🦁질문하십시오</h1>
+    <div class="container">
+        <h1>무엇이든 물어보살</h1>
         <a href="{% url 'new' %}" class="button">새로운 질문하기</a>
         <ul>
             {% for post in posts %}
                 <li>
-                    <a href="{% url 'detail' pk=post.id %}">{{post.title}}</a>
-                    <span>{{post.upload_time}}</span>
+                    <a href="{% url 'detail' pk=post.id %}">{{ post.title }}</a>
+                    <span>{{ post.upload_time }}</span>
                 </li>
             {% endfor %}
         </ul>

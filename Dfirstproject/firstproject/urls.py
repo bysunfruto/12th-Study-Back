@@ -34,7 +34,7 @@ urlpatterns = [
     path('<int:pk>/comment', community.views.add_comment, name="add_comment"),
     path('<int:pk>/like', community.views.like_post, name="like_post"),
 
-    path('accounts/login', accounts.views.login_view, name="login"),
-    path('accounts/logout', accounts.views.logout_view, name="logout"),
-    path('accounts/signup', accounts.views.signup_view, name="signup"),
+    path('accounts/login/', accounts.views.login_view, name="login"),
+    path('accounts/logout/', accounts.views.logout_view, name="logout"),
+    path('accounts/signup/', accounts.views.signup_view, name="signup"),
     ]
