@@ -1,4 +1,4 @@
-{% extends 'list.html' %}
+{% extends 'home.html' %}
 
 {% load static %}
 
