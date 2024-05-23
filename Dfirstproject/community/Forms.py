@@ -11,4 +11,4 @@ class CommentForm(forms.ModelForm):
         model=Comment
         fields=['username', 'comment_text']
 
-##수정
+##수정sou
